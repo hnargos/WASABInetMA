@@ -1,0 +1,53 @@
+ABORT_AFTER_N_OVERFIT_EPOCHS: 5
+ABORT_ON_LOSS: -11.0
+ABORT_ON_OVERFIT: false
+ABORT_ON_SLOW_TRAIN: 0.1
+ABORT_ON_TIME: 3600
+AUTOSAVE_FREQ: 1
+BATCH_SIZE: 128
+DATA_SPLIT: 0.1
+DATA_X_PATH: data/example_tiny/20210115_X_tiny_4096_samples.pt
+DATA_Y_PATH: data/example_tiny/20210115_y_tiny_4096_samples.pt
+FORCE_CPUGPU: cpu
+LAYERS:
+- linear
+- elu
+- linear
+- elu
+- linear
+LAYER_KWARGS:
+  0:
+    bias: true
+  2:
+    bias: true
+  4:
+    bias: true
+LOSS_FKT: GNLL
+NET: CUSTOM
+NOISE: gamma_std
+NORM_TGTS:
+  B1:
+  - 0.5
+  - 1.5
+  T1:
+  - 0.0
+  - 4.0
+  T2:
+  - 0.0
+  - 2.0
+  dB0:
+  - -0.5
+  - 0.5
+N_NEURONS:
+- 31
+- 100
+- 100
+- 8
+OPTIMIZER: Adam
+OUTPUT_DIR: output/tests
+TYPE_PARAMS:
+- dB0
+- B1
+- T1
+- T2
+VAL_FREQ: 1

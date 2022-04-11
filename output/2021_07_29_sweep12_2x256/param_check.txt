@@ -1,0 +1,3 @@
+mean_abs_dB0: 3.940e-03, max_abs_dB0: 1.839e+00, mean_rel_dB0: 2.339e+01
+mean_abs_B1: 8.493e-03, max_abs_B1: 2.641e+00, mean_rel_B1: 3.068e-01
+mean_abs_T1: 2.937e+01, max_abs_T1: 3.181e+03, mean_rel_T1: 1.629e+00

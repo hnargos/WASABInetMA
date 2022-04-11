@@ -1,0 +1,78 @@
+ABORT_AFTER_N_OVERFIT_EPOCHS: 20
+ABORT_ON_NAN: True
+ABORT_ON_OVERFIT: False
+AUTOSAVE_FREQ: 1
+BATCH_SIZE:
+  1: 128
+  10: 256
+  20: 512
+CONFIG_NAME: 2021_09_24_sweep12_2x256_dropout_15
+DATA_SPLIT: 0.1
+DATA_X_PATH: /data/wasabi/train_data/example_large/20210712_WASABITI_sweep12/20210714_X_WASABITI_sweep12.pt
+DATA_Y_PATH: /data/wasabi/train_data/example_large/20210712_WASABITI_sweep12/20210714_y_WASABITI_sweep12.pt
+FORCE_CPUGPU: cpu
+LAYERS:
+- linear
+- elu
+- linear
+- elu
+- dropout
+- linear
+- elu
+- dropout
+- linear
+- elu
+- dropout
+- linear
+- elu
+- dropout
+- linear
+- elu
+- dropout
+- linear
+- softplus
+LAYER_KWARGS:
+  4:
+    p: 0.15
+  7:
+    p: 0.15
+  10:
+    p: 0.15
+  13:
+    p: 0.15
+  16:
+    p: 0.15
+MONTECARLODROPOUT: True
+LOSS_FKT: 'GNLLonSigma'
+NET: CUSTOM
+NOISE: gamma_std
+NORM_TGTS:
+  B1:
+  - 0.2
+  - 2.0
+  T1:
+  - 0.0
+  - 7.0
+  T2:
+  - 0.0
+  - 5.0
+  dB0:
+  - -1.0
+  - 1.0
+N_NEURONS:
+- 31
+- 128
+- 128
+- 256
+- 256
+- 128
+- 128
+- 8
+OPTIMIZER: 'Adam'
+OUTPUT_DIR: output/2021_09_24_sweep12_2x256_dropout_15
+TYPE_PARAMS:
+- dB0
+- B1
+- T1
+- T2
+VAL_FREQ: 1

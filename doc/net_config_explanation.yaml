@@ -1,0 +1,102 @@
+# OPTIONAL indicates entries that can be left out from the config file. That leaves that feature out of the training.
+#
+## Changeable without possibly creating a false record
+# specifies which folder to save the model and the running
+OUTPUT_DIR: 'output'
+# after that many epochs it calculates the loss of the validation set
+VAL_FREQ: 1
+# every n epochs the model gets saved
+AUTOSAVE_FREQ: 10
+# OPTIONAL save every n epochs into a separate file
+# False or int
+REG_SAFE: 10
+# OPTIONAL force cpu or gpu usage: 'cpu', 'gpu'
+# Default gets that from the machine, gpu if possible
+FORCE_CPUGPU: 'cpu'
+# If true aborts the training after n number of epochs; default = False
+ABORT_ON_OVERFIT: False
+ABORT_AFTER_N_OVERFIT_EPOCHS: 20
+# OPTIONAL if the trainings loss decrease is smaller then x (in positive float) it aborts the training; default = False
+ABORT_ON_SLOW_TRAIN: 0.1
+# OPTIONAL if the average sample loss is nan the training will stop, default True
+ABORT_ON_NAN: False
+# OPTIONAL if one wants to train two networks for a certain period of time this can be set
+# it checks for this once every epoch
+# time is set in seconds
+#ABORT_ON_TIME: 3600.
+# OPTIONAL if one wants to train until a certain trainings loss is reached this can be specified here
+# it checks for this once every epoch and only considers the loss of the trainings set
+# number is a float
+#ABORT_ON_LOSS: -11.
+## Changeable without creating a false record IF the final dataset is the same
+# path to the trainings data
+DATA_X_PATH: 'output/create_data_config_X_noisy.pt'
+DATA_Y_PATH: 'output/create_data_config_y_noisy.pt'
+## Should not be changed without changing the config file name
+# (partially) OPTIONAL name
+# if the config is loaded from a .yaml file a name will be automatically assigned if it does not exist yet
+# otherwise the name has to be given by the user
+CONFIG_NAME: 'config123'
+# Optimizer to be used. Implemented: 'Adam', 'SGD'
+# possible variants, string, dictionary w. /w. out kwargs
+# kwargs are the pytorch kwargs for that optimizer
+# OPTIMIZER: 'Name'
+# OPTIMIZER: {first epoch integer: 'first Name', second epoch integer: 'second Name'}
+# OPTIMIZER: {first epoch integer n1: 'first Name', 'n1_kwargs':{'some parameter': its value} }
+OPTIMIZER: 'Adam'
+# Loss function to be used. Implemented: 'GNLL', 'MSELoss', 'GNLLonSigma', GNLLonSigma_PhysM, GNLLonSigma_PhysM_alt
+# for MSELoss it is possible to use the nn.MSELoss kwargs:
+# LOSS_FKT: {'FCT': 'MSELoss, 'kwargs': {insert nn.MSELoss kwargs e.g. 'reduction': 'sum'} }
+# for functions with a physical model a dictionary is also necessary (default values listed, as per function)
+  # b0_shift, b1, t1, t2 only have relevance if the net does not train for them
+  # x and trec always have to be filled
+# LOSS_FKT: {'FCT': 'GNLLonSigma_PhysM, 'kwargs': {
+  #                 x: Union[Tensor, list],       # relative offset positions in ppm
+  #                 trec: [Tensor, list, float],  # singular value or list type
+  #                 lambda_fact: Tensor = 1.,     # this is the scaling factor between the physical model and the GNLL
+  #                 b0_shift: Tensor = 0.,
+  #                 b1: Tensor = 3.75,
+  #                 t1: Tensor = 2.,
+  #                 t2: Tensor = 0.1,
+  #                 tp: Tensor = 0.005,
+  #                 gamma: Tensor = 42.5764} }
+# # GNLLonSigma_PhysM_alt is set the same as GNLLonSigma_PhysM but also considers the spoiler times internally
+LOSS_FKT: 'GNLL'
+# batch size of the mini-batches
+# can be an int or a dict of the form { 1: 64, 5: 128 } where the keys are the epochs starting with 1
+BATCH_SIZE: { 1: 64, 5: 128 }
+# OPTIONAL noise
+# only 'gamma_std' exists, this creates a normal distribution where the std is sampled with a gamma distribution
+NOISE: gamma_std
+# specify the amount of data: ]0,1[ that makes up the validation data, the test dataset is set to 5%
+DATA_SPLIT: 0.1
+# OPTIONAL Used to change the order or which input/ output parameters are used 
+TYPE_PARAMS: ['dB0','B1','T1','T2']
+# OPTIONAL for BMCTool style data, defaults to False
+# normalize_tgt_space if true to the maximal data spread +- 0.1 for every parameter
+# OR if given a dictionary, uses that. This parameter is also definable in the load function (has priority there)
+NORM_TGTS: {'dB0': [-1., 1.], 'B1': [0.1, 2.], 'T1': [0., 7.], 'T2': [0., 5.]}
+# OPTIONAL only useful if NORM_TGTS is specified
+# The range to which it will normally be normed. int: [0,1] * norm_range; list: norm_range. Default = 1.
+# Example: value of 2. with norm_tgt_space = [0., 4.]: value becomes 0.5
+# Exanmple 2: value of 2. with norm_tgt_space = [0., 4.] and norm_range = 2: value becomes 1
+# Example 2: value of 2. with norm_tgt_space = [0., 4.] and norm_range = [1., 2.]: value becomes 1.5
+NORM_RANGE: 1.
+# OPTIONAL if set to true disables the eval() mode. This enables using dropout layer during prediction (default = False)
+MONTECARLODROPOUT: False
+# specifies which neural net to be used, see neural_nets.py. 
+# 'CUSTOM' allows for a custom net to be created based on the optional parameters below
+NET: 'CUSTOM'
+
+## Required for NET: 'CUSTOM'
+## DeepCEST specifications
+# Sequence of layers starting with layer 0. This includes activation, input and output layer.
+# Implemented: 'identity', 'linear', 'conv1d', 'conv2d', 
+# Implemented activations: 'elu', 'leakyrelu', 'logsigmoid', 'relu', 'sigmoid', 'softplus', 'tanh',
+# Implemented 'softplussplit'; this requires a LAYER_KWARGS: 'c_split': [n_start_neuron, m_end_neuron]
+# Implemented: 'dropout'
+LAYERS: ['linear', 'elu', 'linear', 'elu', 'linear']  # starting at layer 0
+# number of neurons per layer, excluding activation layer
+N_NEURONS: [31, 100, 100, 8]
+# special **kwargs for the layer, see https://pytorch.org/docs/stable/nn.html for specifics
+#LAYER_KWARGS: {0: {'bias': True}, 2: {'bias': True}, 4: {'bias': True}}  # starting at layer 0

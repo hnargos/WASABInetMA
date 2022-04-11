@@ -1,0 +1,44 @@
+b0: 3
+b0_inhom: 0.0
+compartments:
+- - 0.0
+  - 0.69
+  - 0.92
+  - 0.0
+  - 0.0
+  - 0.0
+- - 0
+  - 0.6704
+  - 0.896
+  - 0.0
+  - 0.0
+  - -2
+- - 0
+  - 0.26
+  - 0.42
+  - -.21
+  - -.26
+  - 9
+- - 0
+  - 0.15
+  - 0.25
+  - 0.29
+  - -.16
+  - -6
+gamma: 267.5153
+max_pulse_samples: 300
+npx: 128
+par_calc: false
+rel_b1: 1
+reset_init_mag: true
+scale: 0.0
+tissues:
+- surrounding
+- gm
+- wm
+- csf
+verbose: false
+water_pool:
+  f: 1
+  r1: 0.7692307692307692
+  r2: 13.333333333333334
